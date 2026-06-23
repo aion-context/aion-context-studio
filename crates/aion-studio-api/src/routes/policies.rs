@@ -13,7 +13,7 @@ use std::collections::BTreeMap;
 use studio_core::audit::{self, AuditView};
 use studio_core::authoring::{self, CommitInfo};
 use studio_core::diff::{diff_lines, DiffLine};
-use studio_core::evaluate::{self, Decision};
+use studio_core::evaluate::{self, Decision, Scalar};
 use studio_core::multisig_store::{self, MultiSigProgress};
 use studio_core::workspace::PolicyId;
 use studio_core::{policies, PolicySummary};
@@ -220,7 +220,7 @@ pub async fn export(
 
 #[derive(Deserialize)]
 pub struct SimulateReq {
-    pub input: BTreeMap<String, f64>,
+    pub input: BTreeMap<String, Scalar>,
 }
 
 /// `POST /api/policies/{id}/simulate` — evaluate a proposed action against the current rules.
