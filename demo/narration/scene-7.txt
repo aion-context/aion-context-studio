@@ -1,0 +1,1 @@
+And woven through all of it is a copilot. Claude sees this policy's real context — its current rules, its verification state, its governance and history — and helps you read, draft, and refine. Ask it to add a rule, and it returns one, in the right format, ready to apply. But the line is firm: Claude advises and drafts. A human applies, and a human signs.

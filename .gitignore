@@ -8,6 +8,9 @@ web/.svelte-kit
 mutants.out
 mutants.out.old
 
+# raw screen recording — large + regenerable via record-demo.js (the muxed mp4 is kept)
+demo/playwright-video/
+
 # stray runtime/test artifacts — never source. (Mutation runs that perturb a path helper can write
 # these into a crate dir; this keeps signing keys and policy artifacts out of the repo.)
 *.key

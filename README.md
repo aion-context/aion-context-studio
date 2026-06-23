@@ -18,11 +18,21 @@ operation.** It is a reference implementation in the family of aion-trust and ai
 > the parties that hold them; the studio would talk to their signing services. The key registry
 > never holds a secret.
 
+## Demo
+
+[![Watch the aion-context-studio demo](demo/demo-poster.jpg)](https://youtu.be/go-fghIWHN4)
+
+A ~3-minute narrated tour: compose a policy in the builder, verify its four guarantees, govern it
+with K-of-N approval, simulate a decision, audit and export it, and draft a rule with the Claude
+copilot — every policy a signed, provable artifact. ▶ **https://youtu.be/go-fghIWHN4**
+
 ## Status
 
-**Phase 0 complete** — workspace + a read-only vertical slice: list policies → open one → see its
-four-guarantee verification, on real seeded data, end-to-end through the API and SPA. See
-[`ROADMAP.md`](ROADMAP.md).
+**Phases 0–6 complete** — the full studio: author and commit signed versions with a live diff,
+K-of-N multisig governance, a key registry (register / rotate / revoke / epochs / trusted-JSON),
+policy simulation with a decision trace, audit · compliance · export, and a context-aware Claude
+copilot. See [`ROADMAP.md`](ROADMAP.md). (Phase 7 — OS-keyring / hardware key custody — is the
+remaining stretch.)
 
 ## Run it
 

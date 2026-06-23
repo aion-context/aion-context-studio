@@ -1,0 +1,1 @@
+Before a policy ever governs a real action, you can test it. Simulate proposes an action — an amount, a tier, a flag — and shows the decision the policy would return, with a trace of exactly which rule matched and why. It's the check-before-it-acts loop, made visible.

@@ -1,0 +1,8 @@
+file 'narration/scene-1.mp3'
+file 'narration/scene-2.mp3'
+file 'narration/scene-3.mp3'
+file 'narration/scene-4.mp3'
+file 'narration/scene-5.mp3'
+file 'narration/scene-6.mp3'
+file 'narration/scene-7.mp3'
+file 'narration/scene-8.mp3'

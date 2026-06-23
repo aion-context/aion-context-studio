@@ -1,0 +1,1 @@
+High-stakes policies shouldn't change on one person's say-so. Governance requires K of N approval — here, two of three registered signers must sign off before a version is accepted. The studio tracks the threshold live, and every new version starts approval fresh.

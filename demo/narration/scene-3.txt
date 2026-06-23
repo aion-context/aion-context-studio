@@ -1,0 +1,1 @@
+Every policy is verified the same way — offline, with no middleman. Four guarantees, checked every time: the structure is well-formed, the contents match their hash, the version chain is intact, and every signature is authentic. All four pass. This version is valid — and anyone holding the public registry can confirm it independently.

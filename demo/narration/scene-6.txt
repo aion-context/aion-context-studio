@@ -1,0 +1,1 @@
+Everything is on the record. The audit trail is the policy's operation history — who did what, and when. From here you can generate a compliance report — for SOX, HIPPA, or G D P R — or export the whole artifact as JSON, YAML, or C S V for an auditor.
