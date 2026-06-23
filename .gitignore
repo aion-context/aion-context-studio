@@ -1,0 +1,17 @@
+/target
+/studio-data
+**/*.env
+.creds/
+web/node_modules
+web/dist
+web/.svelte-kit
+mutants.out
+mutants.out.old
+
+# stray runtime/test artifacts — never source. (Mutation runs that perturb a path helper can write
+# these into a crate dir; this keeps signing keys and policy artifacts out of the repo.)
+*.key
+*.aion
+**/*.policy.json
+**/*.approvals.json
+**/registry.json

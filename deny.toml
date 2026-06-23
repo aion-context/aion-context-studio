@@ -1,0 +1,23 @@
+# cargo-deny configuration — keep the dependency tree honest.
+[advisories]
+version = 2
+# Transitive advisories inherited from aion-context's vetted crypto/PQC stack — upstream's call,
+# re-reviewed when aion-context updates. Mirrors aion-trust's disposition.
+ignore = [
+    "RUSTSEC-2024-0436", # paste — unmaintained (transitive)
+    "RUSTSEC-2026-0162", # pqcrypto (transitive, aion-context)
+    "RUSTSEC-2026-0163", # pqcrypto-internals — unmaintained (transitive)
+    "RUSTSEC-2026-0166", # pqcrypto-mldsa — unmaintained (transitive)
+    "RUSTSEC-2026-0186", # memmap2 (transitive via aion-context) — unsound, not exploitable
+]
+
+[licenses]
+version = 2
+allow = ["MIT", "Apache-2.0", "Apache-2.0 WITH LLVM-exception", "BSD-2-Clause", "BSD-3-Clause", "ISC", "Unicode-3.0", "Zlib", "MPL-2.0", "CDLA-Permissive-2.0"]
+
+[bans]
+multiple-versions = "allow"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
