@@ -12,6 +12,13 @@ aion-context.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
+# OS-keyring custody (Phase 7). Off by default — the local demo uses the file vault. A desktop/Tauri
+# build enables this feature plus a platform store feature (e.g. apple-native / windows-native /
+# sync-secret-service). With no platform feature, only the in-memory mock store is available (tests).
+keyring = { version = "3", default-features = false, optional = true }
+
+[features]
+keyring = ["dep:keyring"]
 
 [lints]
 workspace = true

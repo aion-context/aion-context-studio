@@ -1,0 +1,7 @@
+# cargo-mutants config.
+#
+# Exclude the OS-keyring vault: it is `#[cfg(feature = "keyring")]` and is a thin wrapper over the
+# platform credential store. Headless (no platform store, only the in-memory mock, which is not a
+# shared keystore) its store/load cannot be round-trip verified, so mutants like `store -> Ok(())`
+# are not killable here. The default file-custody path is fully mutation-covered. See docs/CUSTODY.md.
+exclude_re = ["KeyringVault"]

@@ -55,6 +55,19 @@ streamed over SSE (Anthropic Messages API via `ANTHROPIC_API_KEY`; degrades grac
 **Claude advises and drafts; humans apply and sign.** The context assembly lives in `studio-core`
 and never touches signing keys (pinned by a test); the network call is isolated in the API layer.
 
-## Phase 7 — Custody (stretch)
+## Phase 7 — Custody (stretch, in progress)
 
-A Tauri build with OS-keyring / hardware key custody, retiring the local-demo on-disk keystore.
+Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custody.
+
+- **Custody abstraction — done.** `studio-core::keystore` now sits behind a `KeyVault` trait:
+  `FileVault` (the demo default) and `KeyringVault` (OS keyring via the `keyring` crate, feature
+  `keyring`), selected at runtime by `STUDIO_CUSTODY`. The rest of the studio no longer assumes where
+  a key lives. Gate-green: the file path is fully mutation-covered; the feature-gated keyring wrapper
+  is tested against the in-memory mock and excluded from mutation (untestable headless). See
+  [`docs/CUSTODY.md`](docs/CUSTODY.md).
+- **Tauri desktop shell — scaffolded.** A native window running the existing axum app with
+  `STUDIO_CUSTODY=keyring`. Kept out of the workspace (needs webview libs + a desktop session, so it
+  can't build on a headless box / CI); spec and steps in [`tauri/README.md`](tauri/README.md).
+- **Remaining:** make `aion-studio-api` embeddable (a `serve()` lib fn), build out the Tauri crate on
+  a desktop, a first-run key-import command, and a custody-agnostic author index (today
+  `registry_admin` enumerates authors by listing the keys dir — file-vault-specific).
