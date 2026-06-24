@@ -4,4 +4,4 @@
 # platform credential store. Headless (no platform store, only the in-memory mock, which is not a
 # shared keystore) its store/load cannot be round-trip verified, so mutants like `store -> Ok(())`
 # are not killable here. The default file-custody path is fully mutation-covered. See docs/CUSTODY.md.
-exclude_re = ["KeyringVault"]
+exclude_re = ["KeyringVault", "import_to_keyring", "copy_file_key_to_keyring"]

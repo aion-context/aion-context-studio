@@ -72,5 +72,9 @@ Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custod
   &config)`, so the shell runs the studio on a background task. `main` is a thin caller.
 - **Custody-agnostic author index — done.** "Who is registered" lives in `registry/authors.json`
   (`author_index`), not a keys-dir scan, so author enumeration works under either custody.
-- **Remaining:** build out the Tauri crate on a desktop, and a first-run command to import/generate
-  operator keys into the keyring (since on-disk keys are no longer read under keyring custody).
+- **First-run key import — done.** `aion-studio-api import-keys` validates each indexed author's
+  on-disk key against the registry, then (with the `keyring` feature) migrates it into the OS keyring
+  — refusing any key that doesn't match, so signatures keep verifying. The validation core is
+  mutation-covered; the keyring write is feature-gated. (`studio-core::custody`.)
+- **Remaining:** build out the Tauri crate on a desktop (the native window itself; the studio it
+  wraps is already custody-agnostic end to end).

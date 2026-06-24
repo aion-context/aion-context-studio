@@ -117,6 +117,22 @@ impl KeyVault for KeyringVault {
     }
 }
 
+/// The public key of an author's key as held in the **file** vault (`kind` = `""` operational,
+/// `".master"` master). Used to validate a migration before writing the secret into another vault.
+pub(crate) fn file_public_key(ws: &Workspace, author: AuthorId, kind: &str) -> Result<[u8; 32]> {
+    Ok(FileVault { ws }
+        .load(author, kind)?
+        .verifying_key()
+        .to_bytes())
+}
+
+/// Copy an author's key from the file vault into the OS keyring.
+#[cfg(feature = "keyring")]
+pub(crate) fn copy_file_key_to_keyring(ws: &Workspace, author: AuthorId, kind: &str) -> Result<()> {
+    let key = FileVault { ws }.load(author, kind)?;
+    KeyringVault.store(author, kind, &key)
+}
+
 pub(crate) fn hex_encode(bytes: &[u8]) -> String {
     let mut s = String::with_capacity(bytes.len() * 2);
     for b in bytes {

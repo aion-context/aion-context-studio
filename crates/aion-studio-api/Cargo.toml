@@ -7,6 +7,11 @@ license.workspace = true
 repository.workspace = true
 description = "axum API for aion-context-studio: thin wiring over studio-core; serves the SPA."
 
+[features]
+# Build the desktop/keyring variant: enables OS-keyring custody in studio-core and the keyring branch
+# of the `import-keys` command. Off by default — the demo uses file custody.
+keyring = ["studio-core/keyring"]
+
 [dependencies]
 studio-core.workspace = true
 aion-context.workspace = true

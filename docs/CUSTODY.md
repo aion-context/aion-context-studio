@@ -38,6 +38,26 @@ With the feature but no platform store (e.g. headless CI), only the in-memory **
 the crate's keyring tests use it. The real stores need a desktop session (Keychain unlocked, a running
 Secret Service, etc.).
 
+## First-run import (`import-keys`)
+
+To switch a workspace that ran under file custody over to the keyring, migrate the existing keys —
+don't generate new ones (the registry already pins each author's public key; a fresh private key
+wouldn't verify). The command validates first and refuses a mismatch:
+
+```sh
+# plan only (any build) — validate that on-disk keys match the registry
+cargo run -p aion-studio-api -- import-keys
+
+# actually write them into the OS keyring (desktop build)
+cargo run -p aion-studio-api --features keyring -- import-keys
+# → validated 3 author(s) for keyring import: [1, 2, 3]
+# → imported 3 author(s) into the OS keyring
+```
+
+`studio-core::custody::plan_import` is the validation core (each author's on-disk operational key
+must equal its registered *active* public key); `import_to_keyring` performs the copy under the
+`keyring` feature. After importing, run with `STUDIO_CUSTODY=keyring`.
+
 ## The Tauri shell (`tauri/`) — Phase 7
 
 A desktop build that retires on-disk keys end to end: it runs the existing axum app with

@@ -11,6 +11,7 @@ pub mod audit;
 pub mod author_index;
 pub mod authoring;
 pub mod copilot;
+pub mod custody;
 pub mod diff;
 pub mod error;
 pub mod evaluate;
