@@ -55,9 +55,12 @@ streamed over SSE (Anthropic Messages API via `ANTHROPIC_API_KEY`; degrades grac
 **Claude advises and drafts; humans apply and sign.** The context assembly lives in `studio-core`
 and never touches signing keys (pinned by a test); the network call is isolated in the API layer.
 
-## Phase 7 — Custody (stretch, in progress)
+## Phase 7 — Custody (stretch) ✅
 
-Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custody.
+Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custody. The studio is now
+**custody-agnostic end to end** — enumeration, signing, verifying, and migration all work under
+keyring custody with no file-vault assumption left in the core. The only deferred piece is the native
+desktop *window*, which needs a desktop toolchain to build (it wraps the already-complete studio).
 
 - **Custody abstraction — done.** `studio-core::keystore` now sits behind a `KeyVault` trait:
   `FileVault` (the demo default) and `KeyringVault` (OS keyring via the `keyring` crate, feature
@@ -76,5 +79,6 @@ Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custod
   on-disk key against the registry, then (with the `keyring` feature) migrates it into the OS keyring
   — refusing any key that doesn't match, so signatures keep verifying. The validation core is
   mutation-covered; the keyring write is feature-gated. (`studio-core::custody`.)
-- **Remaining:** build out the Tauri crate on a desktop (the native window itself; the studio it
-  wraps is already custody-agnostic end to end).
+- **Tauri desktop window — deferred (needs a desktop).** Everything it wraps is done; the window
+  itself can't build on a headless box (webview libs + a display), so it's scaffolded with full
+  build steps in [`tauri/README.md`](tauri/README.md) rather than shipped unverified.

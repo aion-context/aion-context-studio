@@ -33,11 +33,11 @@ K-of-N multisig governance, a key registry (register / rotate / revoke / epochs 
 policy simulation with a decision trace, audit · compliance · export, and a context-aware Claude
 copilot.
 
-**Phase 7 (custody) in progress** — the studio is now custody-agnostic end to end: keys sit behind a
+**Phase 7 (custody) complete** — the studio is custody-agnostic end to end: keys sit behind a
 `KeyVault` (file vault by default, OS keyring via `STUDIO_CUSTODY=keyring`), author enumeration uses a
 custody-agnostic index, the server is embeddable (`serve` / `serve_on`), and `import-keys` migrates an
-existing workspace's keys into the OS keyring. The remaining piece is the Tauri desktop **window**
-(needs a desktop toolchain) — scaffolded in [`tauri/`](tauri/README.md); custody model in
+existing workspace's keys into the OS keyring. The Tauri desktop **window** is deferred (it needs a
+desktop toolchain to build) — scaffolded in [`tauri/`](tauri/README.md); custody model in
 [`docs/CUSTODY.md`](docs/CUSTODY.md). See [`ROADMAP.md`](ROADMAP.md).
 
 ## Run it
