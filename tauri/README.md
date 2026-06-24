@@ -29,9 +29,10 @@ thing is the window + the custody selection.
 
 ## Steps to complete it (on a desktop)
 
-1. **Make the server embeddable.** Add a `lib` target to `aion-studio-api` exposing
-   `pub async fn serve(addr: SocketAddr) -> anyhow::Result<()>` (the current `main` becomes a thin
-   caller). The Tauri shell then spawns it on a background Tokio task instead of shelling out.
+1. ~~**Make the server embeddable.**~~ **Done** — `aion-studio-api` exposes
+   `pub async fn serve(config: Config)` and `serve_on(listener, &config)` (the binary's `main` is now
+   a thin caller). The shell spawns `serve` on a background Tokio task; use `serve_on` with a
+   pre-bound `TcpListener` if you need to learn the port first (bind to port 0).
 2. **Crate manifest** (`tauri/Cargo.toml`) — standalone workspace:
    ```toml
    [workspace]                      # own workspace → excluded from the parent gate
@@ -51,7 +52,7 @@ thing is the window + the custody selection.
 3. **`tauri/tauri.conf.json`** — point `build.frontendDist` at `../web/dist`, set
    `app.windows[0].url` to `http://127.0.0.1:8787`, title "aion-context studio", 1280×800.
 4. **`tauri/src/main.rs`** — on setup: `std::env::set_var("STUDIO_CUSTODY", "keyring")`, spawn
-   `aion_studio_api::serve(([127,0,0,1], 8787).into())` on a Tokio task, then run the Tauri app.
+   `aion_studio_api::serve(Config::from_env())` on a Tokio task, then run the Tauri app.
 5. **First-run key import.** With on-disk keys retired, add a one-time "import operator keys into the
    keyring" command (or generate fresh), since `FileVault` files won't be read.
 6. **Author index.** Close the file-custody coupling noted in `docs/CUSTODY.md`: `registry_admin`
