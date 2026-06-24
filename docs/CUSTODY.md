@@ -45,9 +45,10 @@ A desktop build that retires on-disk keys end to end: it runs the existing axum 
 [`../tauri/README.md`](../tauri/README.md). It is **not** part of the Cargo workspace or CI — it needs
 a desktop toolchain (webview libraries + a display) — so the core gate stays green on a headless box.
 
-## Known limitation (tracked)
+## Author enumeration is custody-agnostic
 
-`registry_admin` currently enumerates registered authors by listing `studio-data/keys/`, which is
-file-vault–specific. Under keyring custody that enumeration returns nothing. Closing Phase 7 means
-adding a custody-agnostic author index (a small registry-side list) so author enumeration no longer
-depends on the file layout. The signing/verifying paths themselves are already custody-agnostic.
+"Who is registered" lives in a small index — `registry/authors.json`, maintained by `author_index`
+and written on seed/register — **not** by listing the keys directory. So author enumeration works the
+same under file or keyring custody. (Earlier the registry listed `keys/author-N.key`, which returned
+nothing under keyring custody; that coupling is gone.) The key registry holds the public keys, the
+vault holds the secrets, and the index holds the membership — three separate concerns.

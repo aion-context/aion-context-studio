@@ -7,7 +7,7 @@ use aion_context::types::AuthorId;
 
 use crate::error::Result;
 use crate::workspace::{PolicyId, Workspace};
-use crate::{keystore, registry_store};
+use crate::{author_index, keystore, registry_store};
 
 const SAMPLE_ID: &str = "refund-authorization";
 
@@ -47,6 +47,7 @@ fn seed_sample(ws: &Workspace) -> Result<()> {
         registry.register_author(author, master.verifying_key(), op.verifying_key(), 1)?;
         keystore::save_signing_key(ws, author, &op)?;
         keystore::save_master_key(ws, author, &master)?; // needed to rotate/revoke later
+        author_index::add(ws, author_id)?; // custody-agnostic "who is registered"
         op_keys.push((author, op));
     }
     registry_store::save(ws, &registry)?;

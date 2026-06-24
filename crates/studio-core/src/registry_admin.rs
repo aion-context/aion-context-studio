@@ -14,7 +14,7 @@ use serde::Serialize;
 
 use crate::error::{Result, StudioError};
 use crate::workspace::Workspace;
-use crate::{keystore, registry_store};
+use crate::{author_index, keystore, registry_store};
 
 /// One key epoch, rendered for display.
 #[derive(Debug, Clone, Serialize)]
@@ -33,10 +33,10 @@ pub struct AuthorView {
     pub epochs: Vec<EpochView>,
 }
 
-/// Every author the studio knows (by persisted operational key), with epoch timelines.
+/// Every registered author (from the custody-agnostic author index), with epoch timelines.
 pub fn list(ws: &Workspace) -> Result<Vec<AuthorView>> {
     let registry = registry_store::load(ws)?;
-    Ok(author_ids(ws)?
+    Ok(author_index::list(ws)?
         .into_iter()
         .map(|id| author_view(&registry, id))
         .collect())
@@ -46,7 +46,7 @@ pub fn list(ws: &Workspace) -> Result<Vec<AuthorView>> {
 pub fn register(ws: &Workspace, requested: Option<u64>) -> Result<AuthorView> {
     let id = match requested {
         Some(i) => i,
-        None => author_ids(ws)?.into_iter().max().unwrap_or(0) + 1,
+        None => author_index::list(ws)?.into_iter().max().unwrap_or(0) + 1,
     };
     let mut registry = registry_store::load(ws)?;
     if registry.active_epoch_at(AuthorId::new(id), 1).is_some() {
@@ -63,6 +63,7 @@ pub fn register(ws: &Workspace, requested: Option<u64>) -> Result<AuthorView> {
     registry_store::save(ws, &registry)?;
     keystore::save_signing_key(ws, AuthorId::new(id), &op)?;
     keystore::save_master_key(ws, AuthorId::new(id), &master)?;
+    author_index::add(ws, id)?; // custody-agnostic "who is registered"
     Ok(author_view(&registry, id))
 }
 
@@ -164,30 +165,6 @@ fn epoch_view(e: &KeyEpoch) -> EpochView {
     }
 }
 
-/// Author ids the studio has keys for (operational `author-N.key`, excluding `.master`).
-fn author_ids(ws: &Workspace) -> Result<Vec<u64>> {
-    let dir = ws.keys_dir();
-    if !dir.exists() {
-        return Ok(Vec::new());
-    }
-    let mut ids = Vec::new();
-    for entry in std::fs::read_dir(&dir)? {
-        let name = entry?.file_name();
-        let name = name.to_string_lossy();
-        if let Some(num) = name
-            .strip_prefix("author-")
-            .and_then(|r| r.strip_suffix(".key"))
-        {
-            if let Ok(n) = num.parse::<u64>() {
-                ids.push(n);
-            }
-        }
-    }
-    ids.sort_unstable();
-    ids.dedup();
-    Ok(ids)
-}
-
 /// `max(current_version over all policies) + 1` — so existing versions stay valid.
 fn effective_from(ws: &Workspace) -> Result<u64> {
     let mut max_v = 0u64;
@@ -258,6 +235,8 @@ mod tests {
         // register author 4
         let a4 = register(&ws, None).unwrap();
         assert_eq!(a4.author_id, 4);
+        // the new author shows up via the custody-agnostic index, not a keys-dir scan
+        assert!(list(&ws).unwrap().iter().any(|a| a.author_id == 4));
         assert!(matches!(
             register(&ws, Some(1)),
             Err(StudioError::AlreadyExists(_))

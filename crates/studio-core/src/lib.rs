@@ -8,6 +8,7 @@
 #![cfg_attr(not(test), warn(clippy::unwrap_used, clippy::expect_used))]
 
 pub mod audit;
+pub mod author_index;
 pub mod authoring;
 pub mod copilot;
 pub mod diff;

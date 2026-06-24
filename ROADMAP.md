@@ -68,6 +68,9 @@ Retire the local-demo on-disk keystore in favour of OS-keyring / hardware custod
 - **Tauri desktop shell — scaffolded.** A native window running the existing axum app with
   `STUDIO_CUSTODY=keyring`. Kept out of the workspace (needs webview libs + a desktop session, so it
   can't build on a headless box / CI); spec and steps in [`tauri/README.md`](tauri/README.md).
-- **Remaining:** make `aion-studio-api` embeddable (a `serve()` lib fn), build out the Tauri crate on
-  a desktop, a first-run key-import command, and a custody-agnostic author index (today
-  `registry_admin` enumerates authors by listing the keys dir — file-vault-specific).
+- **Embeddable server — done.** `aion-studio-api` exposes `serve(config)` / `serve_on(listener,
+  &config)`, so the shell runs the studio on a background task. `main` is a thin caller.
+- **Custody-agnostic author index — done.** "Who is registered" lives in `registry/authors.json`
+  (`author_index`), not a keys-dir scan, so author enumeration works under either custody.
+- **Remaining:** build out the Tauri crate on a desktop, and a first-run command to import/generate
+  operator keys into the keyring (since on-disk keys are no longer read under keyring custody).

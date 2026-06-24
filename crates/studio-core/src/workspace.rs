@@ -34,6 +34,12 @@ impl Workspace {
         self.root.join("registry").join("registry.json")
     }
 
+    /// The custody-agnostic author index — which author ids are registered, independent of where
+    /// their keys live (so author enumeration doesn't assume the file vault).
+    pub fn authors_path(&self) -> PathBuf {
+        self.root.join("registry").join("authors.json")
+    }
+
     /// The `.aion` path for a validated id.
     pub fn policy_path(&self, id: &PolicyId) -> PathBuf {
         self.policies_dir().join(format!("{}.aion", id.as_str()))
@@ -122,6 +128,10 @@ mod tests {
         assert_eq!(
             ws.registry_path(),
             Path::new("/tmp/ws/registry/registry.json")
+        );
+        assert_eq!(
+            ws.authors_path(),
+            Path::new("/tmp/ws/registry/authors.json")
         );
     }
 }
