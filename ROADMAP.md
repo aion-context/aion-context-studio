@@ -42,9 +42,10 @@ decision}`, first-match-wins, numeric ops); the seed sample uses it.
 
 The embedded operation log rendered as a timeline (action · who · when · entry hash); a compliance
 report (SOX / HIPAA / GDPR / Generic); and JSON / YAML / CSV export for auditors. Presented as
-recorded history rather than a re-verified cross-entry hash chain: aion-context's audit
-`compute_hash` covers the volatile `details_offset`, so the `previous_hash` links don't survive a
-commit's string-table repack — and nothing in the library verifies them. (Worth reporting upstream.)
+recorded history rather than a re-verified cross-entry hash chain: in current aion-context an
+appended entry's stored `previous_hash` is misaligned by one `u64`, so `validate_chain` fails after
+the first commit even on an untampered file — and nothing in the library verifies the chain anyway.
+Reported upstream: <https://github.com/aion-context/aion-context/issues/141>.
 
 ## Phase 6 — Claude copilot ✅
 

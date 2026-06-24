@@ -5,11 +5,12 @@
 //! entry's bytes.
 //!
 //! NOTE — we present the trail as recorded *history*, not as a re-verified hash chain. In the
-//! current aion-context, an entry's `compute_hash` covers its raw layout (including the volatile
-//! `details_offset`), and a commit repacks the string table, so the stored cross-entry
-//! `previous_hash` links no longer match after a rewrite — and nothing in the library verifies them.
-//! Asserting an intact chain here would be misleading; surfacing the operation log honestly is the
-//! right auditor affordance. (Worth reporting upstream.)
+//! current aion-context an appended entry's stored `previous_hash` is misaligned by one `u64` (the
+//! genuine previous hash, shifted 8 bytes with the last 8 bytes zeroed), so `validate_chain` fails
+//! after the first commit even on an untampered file — and nothing in the library verifies the chain
+//! anyway. Asserting an intact chain here would be misleading; surfacing the operation log honestly
+//! is the right auditor affordance. Reported upstream:
+//! <https://github.com/aion-context/aion-context/issues/141>.
 
 use aion_context::compliance::{generate_compliance_report, ComplianceFramework, ReportFormat};
 use aion_context::export::{export_file, ExportFormat};
