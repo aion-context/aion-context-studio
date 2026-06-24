@@ -31,8 +31,14 @@ copilot — every policy a signed, provable artifact. ▶ **https://youtu.be/go-
 **Phases 0–6 complete** — the full studio: author and commit signed versions with a live diff,
 K-of-N multisig governance, a key registry (register / rotate / revoke / epochs / trusted-JSON),
 policy simulation with a decision trace, audit · compliance · export, and a context-aware Claude
-copilot. See [`ROADMAP.md`](ROADMAP.md). (Phase 7 — OS-keyring / hardware key custody — is the
-remaining stretch.)
+copilot.
+
+**Phase 7 (custody) in progress** — the studio is now custody-agnostic end to end: keys sit behind a
+`KeyVault` (file vault by default, OS keyring via `STUDIO_CUSTODY=keyring`), author enumeration uses a
+custody-agnostic index, the server is embeddable (`serve` / `serve_on`), and `import-keys` migrates an
+existing workspace's keys into the OS keyring. The remaining piece is the Tauri desktop **window**
+(needs a desktop toolchain) — scaffolded in [`tauri/`](tauri/README.md); custody model in
+[`docs/CUSTODY.md`](docs/CUSTODY.md). See [`ROADMAP.md`](ROADMAP.md).
 
 ## Run it
 
