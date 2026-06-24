@@ -8,7 +8,7 @@ source ~/.creds/eleven.env
 
 VOICE=EXAVITQu4vr4xnSDxMaL          # Sarah — Mature, Reassuring, Confident
 MODEL="${ELEVEN_MODEL:-eleven_v3}"  # latest; override with ELEVEN_MODEL if needed
-SCENES=(1 2 3 4 5 6 7 8)
+SCENES=(1 2 3 4 5 6 7 8 9)
 
 declare -A DUR
 for i in "${SCENES[@]}"; do

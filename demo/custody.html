@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>aion-context-studio — custody</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --canvas: oklch(98.2% 0.005 240);
+        --surface: oklch(99.5% 0.003 240);
+        --surface-2: oklch(96.6% 0.007 240);
+        --ink: oklch(24% 0.03 245);
+        --ink-soft: oklch(44% 0.025 242);
+        --ink-faint: oklch(56% 0.018 240);
+        --line: oklch(89% 0.012 240);
+        --line-strong: oklch(80% 0.02 240);
+        --accent: oklch(52% 0.09 220);
+        --accent-deep: oklch(44% 0.092 222);
+        --accent-tint: oklch(95% 0.03 220);
+        --ok: oklch(52% 0.1 178);
+        --ok-tint: oklch(95% 0.045 178);
+        --warn: oklch(60% 0.115 70);
+        --warn-tint: oklch(95% 0.06 80);
+        --mono: "JetBrains Mono", ui-monospace, monospace;
+        --display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+        --body: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; }
+      body {
+        font-family: var(--body);
+        color: var(--ink);
+        background:
+          radial-gradient(120% 80% at 90% -12%, var(--accent-tint), transparent 60%),
+          var(--canvas);
+        display: grid;
+        place-items: center;
+        padding: 3.5rem 2rem;
+      }
+      .wrap { width: min(60rem, 100%); }
+      .kicker {
+        font-family: var(--display); text-transform: uppercase; letter-spacing: 0.16em;
+        font-size: 0.72rem; font-weight: 700; color: var(--accent); margin: 0 0 0.5rem;
+      }
+      h1 { font-family: var(--display); font-weight: 700; font-size: 2rem; margin: 0 0 0.4rem; letter-spacing: -0.01em; }
+      .lede { color: var(--ink-soft); font-size: 1.02rem; max-width: 60ch; margin: 0 0 2rem; }
+
+      .flow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1.25rem; align-items: stretch; margin-bottom: 2rem; }
+      .vault { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 1.1rem 1.25rem; box-shadow: 0 1px 2px oklch(24% 0.03 245 / 0.05); }
+      .vault.now { border-color: oklch(86% 0.07 80); background: var(--warn-tint); }
+      .vault.next { border-color: oklch(84% 0.07 178); background: var(--ok-tint); }
+      .vault h2 { font-family: var(--display); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 0.5rem; color: var(--ink-faint); }
+      .vault .name { font-family: var(--display); font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+      .vault .now-name { color: var(--warn); }
+      .vault .next-name { color: var(--ok); }
+      .vault p { margin: 0; font-size: 0.9rem; color: var(--ink-soft); line-height: 1.5; }
+      .vault code { font-family: var(--mono); font-size: 0.82em; }
+      .arrow { display: grid; place-items: center; font-family: var(--display); font-weight: 700; color: var(--accent); font-size: 1.6rem; }
+
+      .term { border-radius: 12px; overflow: hidden; border: 1px solid var(--line-strong); box-shadow: 0 12px 32px oklch(24% 0.03 245 / 0.1); }
+      .term-bar { background: var(--surface-2); padding: 0.55rem 0.9rem; display: flex; gap: 0.4rem; align-items: center; border-bottom: 1px solid var(--line); }
+      .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; }
+      .dot.r { background: oklch(64% 0.17 25); } .dot.y { background: oklch(80% 0.13 85); } .dot.g { background: oklch(70% 0.13 150); }
+      .term-bar .t { margin-left: 0.6rem; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-faint); }
+      pre { font-family: var(--mono); font-size: 0.86rem; line-height: 1.7; margin: 0; padding: 1.1rem 1.2rem; background: oklch(99.5% 0.003 240); color: var(--ink-soft); white-space: pre-wrap; }
+      .p { color: var(--accent-deep); font-weight: 600; } /* prompt */
+      .c { color: var(--ink); font-weight: 600; }         /* command */
+      .dim { color: var(--ink-faint); }                    /* comment */
+      .okline { color: var(--ok); font-weight: 600; }
+      .foot { margin-top: 1.5rem; font-size: 0.95rem; color: var(--ink-soft); }
+      .foot b { color: var(--ink); font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <p class="kicker">Phase 7 · custody</p>
+      <h1>Where the keys live is pluggable</h1>
+      <p class="lede">
+        Signing keys sit behind one abstraction. The demo keeps them on disk; the desktop build keeps
+        them in the operating system's keyring — and one command moves an existing workspace across.
+      </p>
+
+      <div class="flow">
+        <div class="vault now">
+          <h2>Demo · default</h2>
+          <div class="name now-name">File vault</div>
+          <p>Keys as <code>keys/author-N.key</code> on disk. Single-operator, loopback only — not production custody.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="vault next">
+          <h2>Desktop · STUDIO_CUSTODY=keyring</h2>
+          <div class="name next-name">OS keyring</div>
+          <p>Keychain · Credential Manager · Secret Service. Nothing sensitive on disk.</p>
+        </div>
+      </div>
+
+      <div class="term">
+        <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="t">migrate to the OS keyring</span></div>
+<pre><span class="p">$</span> <span class="c">ls studio-data/keys</span>
+author-1.key  author-1.master.key  author-2.key  author-2.master.key  author-3.key  author-3.master.key
+
+<span class="p">$</span> <span class="c">aion-studio-api import-keys</span>   <span class="dim"># desktop build: --features keyring</span>
+validated 3 author(s) for keyring import: [1, 2, 3]
+<span class="okline">imported 3 author(s) into the OS keyring</span></pre>
+      </div>
+
+      <p class="foot">
+        The keys validate against the registry before they move — a mismatch is refused. <b>Policies,
+        signatures, and verification are unchanged.</b> Only custody moves.
+      </p>
+    </div>
+  </body>
+</html>

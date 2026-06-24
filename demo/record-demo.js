@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const D = JSON.parse(fs.readFileSync('demo/durations.json', 'utf8'));
 const BASE = 'http://127.0.0.1:8787';
+const STATIC = 'http://127.0.0.1:8791'; // static server over demo/ (custody scene)
 const ms = (s) => Math.round(s * 1000);
 
 (async () => {
@@ -102,8 +103,14 @@ const ms = (s) => Math.round(s * 1000);
     await page.waitForTimeout(11000);
   });
 
-  // 8 — close on the workspace
+  // 8 — custody: file vault → OS keyring, with the real import-keys output
   await scene(8, async () => {
+    await page.goto(STATIC + '/custody.html', { waitUntil: 'networkidle' });
+    await page.waitForTimeout(1500);
+  });
+
+  // 9 — close on the workspace
+  await scene(9, async () => {
     await page.goto(BASE + '/', { waitUntil: 'networkidle' });
     await page.waitForTimeout(1500);
   });

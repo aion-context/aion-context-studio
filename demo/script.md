@@ -25,9 +25,10 @@
 | 5 | **Policy** — Simulate panel; enter an action, see decision + trace. | Before a policy ever governs a real action, you can test it. Simulate proposes an action — an amount, a tier, a flag — and shows the decision the policy would return, with a trace of exactly which rule matched and why. It's the check-before-it-acts loop, made visible. | 20 |
 | 6 | **Policy** — Audit & export; the timeline, then a compliance report. | Everything is on the record. The audit trail is the policy's operation history — who did what, and when. From here you can generate a compliance report — for SOX, HIPAA, or GDPR — or export the whole artifact as JSON, YAML, or CSV for an auditor. | 18 |
 | 7 | **Policy** — Copilot panel; ask it to add a rule; the drafted JSON streams in. | And woven through all of it is a copilot. Claude sees this policy's real context — its current rules, its verification state, its governance and history — and helps you read, draft, and refine. Ask it to add a rule, and it returns one, in the right format, ready to apply. But the line is firm: Claude advises and drafts. A human applies, and a human signs. | 26 |
-| 8 | **Workspace** — settle back on the policy list. | That's the studio: author, govern, verify, simulate, and audit — every policy a signed, provable artifact, with a copilot at your side. Verifiable control, for the age of autonomous agents. | 14 |
+| 8 | **Custody** scene — file vault → OS keyring, with the real `import-keys` output. | By default, this is a single-operator demo, so the keys sit on disk. But where they live is pluggable. Build the desktop edition, and the same studio keeps its signing keys in the operating system's keyring instead — the Keychain, the Credential Manager, the Secret Service. One command migrates an existing workspace: it checks every key against the registry, then moves it in. Nothing sensitive stays on disk — the policies, the signatures, the verification, all unchanged. Only custody moves. | 23 |
+| 9 | **Workspace** — settle back on the policy list. | That's the studio: author, govern, verify, simulate, and audit — every policy a signed, provable artifact, with a copilot at your side. Verifiable control, for the age of autonomous agents. | 14 |
 
-**Running total:** ~2:50.
+**Running total:** ~3:13.
 
 ---
 
@@ -47,4 +48,6 @@
 
 7. And woven through all of it is a copilot. Claude sees this policy's real context — its current rules, its verification state, its governance and history — and helps you read, draft, and refine. Ask it to add a rule, and it returns one, in the right format, ready to apply. But the line is firm: Claude advises and drafts. A human applies, and a human signs.
 
-8. That's the studio: author, govern, verify, simulate, and audit — every policy a signed, provable artifact, with a copilot at your side. Verifiable control, for the age of autonomous agents.
+8. By default, this is a single-operator demo, so the keys sit on disk. But where they live is pluggable. Build the desktop edition, and the same studio keeps its signing keys in the operating system's keyring instead — the Keychain, the Credential Manager, the Secret Service. One command migrates an existing workspace: it checks every key against the registry, then moves it in. Nothing sensitive stays on disk — the policies, the signatures, the verification, all unchanged. Only custody moves.
+
+9. That's the studio: author, govern, verify, simulate, and audit — every policy a signed, provable artifact, with a copilot at your side. Verifiable control, for the age of autonomous agents.
